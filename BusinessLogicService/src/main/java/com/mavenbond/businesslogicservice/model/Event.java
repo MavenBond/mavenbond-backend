@@ -14,10 +14,9 @@ import java.util.Objects;
 @Table(name = "events")
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class Event implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

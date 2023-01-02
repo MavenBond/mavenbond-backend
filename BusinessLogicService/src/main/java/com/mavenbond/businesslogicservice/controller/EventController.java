@@ -1,28 +1,63 @@
 package com.mavenbond.businesslogicservice.controller;
 
 import com.mavenbond.businesslogicservice.model.Event;
-import com.mavenbond.businesslogicservice.repository.EventRepository;
 import com.mavenbond.businesslogicservice.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/events")
+@CrossOrigin
+@NoArgsConstructor
 public class EventController {
-    @Autowired
     private EventService eventService;
 
-    @GetMapping("/events")
-    public List<Event> findAllEvents(Model model) {
-        var events = (List<Event>) eventService.findAllEvents();
-        model.addAttribute("events", events);
-        return events;
+    @GetMapping("/")
+    public ResponseEntity<List<Event>> findAllEvents() {
+        return new ResponseEntity<>(eventService.findAllEvents(), HttpStatus.OK);
     }
 
-    
+    @PostMapping("/")
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        eventService.saveEvent(event);
+        return new ResponseEntity<>(event, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id,
+                                             @RequestBody Event event) {
+        Optional<Event> eventEdit = eventService.findEventById(id);
+
+        return eventEdit.map(e -> {
+            e.setTitle(event.getTitle());
+            e.setSubject(event.getSubject());
+            e.setDescription(event.getDescription());
+            e.setType(event.getType());
+            e.setPlatform(event.getPlatform());
+            e.setStartDate(event.getStartDate());
+            e.setEndDate(event.getEndDate());
+            e.setMoneyMin(event.getMoneyMin());
+            e.setMoneyMax(event.getMoneyMax());
+
+            eventService.saveEvent(e);
+            return new ResponseEntity<>(e, HttpStatus.OK);
+        }).orElseGet(() -> {
+            eventService.saveEvent(event);
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        });
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        eventService.deleteEvent(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
 
 //    private EventRepository eventRepository;

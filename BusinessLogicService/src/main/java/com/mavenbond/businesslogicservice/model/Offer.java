@@ -12,9 +12,9 @@ import java.util.Objects;
 @Table(name = "offers")
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
-public class Offer implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
