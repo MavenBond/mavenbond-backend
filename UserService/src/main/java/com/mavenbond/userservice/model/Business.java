@@ -1,19 +1,13 @@
 package com.mavenbond.userservice.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "business")
-public class Business {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(nullable = false)
+@NoArgsConstructor
+public class Business extends Customer {
+    @Column
     private String name;
-
-    @Column(nullable = false)
-    private String email;
 
     @Column
     private String contact_email;

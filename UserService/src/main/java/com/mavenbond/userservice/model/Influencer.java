@@ -1,19 +1,16 @@
 package com.mavenbond.userservice.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "influencer")
-public class Influencer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+@NoArgsConstructor
+public class Influencer extends Customer {
+    @Column
+    private String fname;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column
+    private String lname;
 
     @Column
     private String facebook_url;
