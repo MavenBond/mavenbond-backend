@@ -13,8 +13,5 @@ public class Business extends Customer {
     private String contact_email;
 
     @Column
-    private String address;
-
-    @Column
-    private String company_url;
+    private String website_url;
 }

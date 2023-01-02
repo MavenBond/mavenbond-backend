@@ -1,4 +1,4 @@
-package com.mavenbond.userservice.model;
+package com.mavenbond.userservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
