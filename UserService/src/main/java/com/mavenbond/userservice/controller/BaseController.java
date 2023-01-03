@@ -1,7 +1,6 @@
 package com.mavenbond.userservice.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mavenbond.userservice.dto.CustomerInput;
+
 import com.mavenbond.userservice.model.Customer;
 import com.mavenbond.userservice.repository.BaseRepository;
 import com.mavenbond.userservice.service.BaseService;

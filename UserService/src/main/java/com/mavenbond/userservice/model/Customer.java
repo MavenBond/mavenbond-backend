@@ -17,8 +17,10 @@ import java.util.Set;
 @Setter
 @Entity(name="customer")
 @Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name="customer_type",
-//        discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({@JsonSubTypes.Type(value = Business.class, name = "Business"),
+        @JsonSubTypes.Type(value = Influencer.class, name = "Influencer"),
+})
 public abstract class Customer {
     @Id
     private String id;

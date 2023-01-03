@@ -1,18 +1,15 @@
 package com.mavenbond.userservice.controller;
 
 import com.mavenbond.userservice.dto.CustomerInput;
-import com.mavenbond.userservice.model.Business;
 import com.mavenbond.userservice.model.Influencer;
-import com.mavenbond.userservice.repository.BusinessRepository;
 import com.mavenbond.userservice.repository.InfluencerRepository;
-import com.mavenbond.userservice.service.BusinessService;
 import com.mavenbond.userservice.service.InfluencerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/influencer")
+@RequestMapping("/api/v1/influencer")
 @CrossOrigin
 public class InfluencerController extends BaseController<Influencer> {
 
