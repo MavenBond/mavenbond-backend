@@ -1,6 +1,7 @@
 services:
   user-service:
-    image: 'user-service-docker.jar'
+    image: "user-service-docker.jar" # For Development
+    # image: "pcminh0505/user-service" # For Production
     build:
       context: .
     container_name: user-service
@@ -14,7 +15,6 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_APPLICATION_NAME="UserService"
     networks:
       - postgres
   postgres:
@@ -43,7 +43,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_SERVER_MODE: "False"
     volumes:
       - pgadmin:/var/lib/pgadmin
     ports:

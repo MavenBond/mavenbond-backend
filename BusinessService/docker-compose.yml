@@ -1,6 +1,7 @@
 services:
   business-service:
-    image: 'business-service-docker.jar'
+    image: "business-service-docker.jar" # For Development
+    # image: "pcminh0505/business-service" # For Production
     build:
       context: .
     container_name: business-service
@@ -42,7 +43,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_SERVER_MODE: "False"
     volumes:
       - pgadmin:/var/lib/pgadmin
     ports:
