@@ -10,5 +10,4 @@ import lombok.Setter;
 public class CustomerInput {
     String id;
     String email;
-    String password;
 }

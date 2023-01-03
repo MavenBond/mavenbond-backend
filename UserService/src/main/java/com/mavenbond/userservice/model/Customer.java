@@ -15,21 +15,16 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name="customer")
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value = Business.class, name = "Business"),
-        @JsonSubTypes.Type(value = Influencer.class, name = "Influencer"),
-})
-public class Customer {
+//@DiscriminatorColumn(name="customer_type",
+//        discriminatorType = DiscriminatorType.STRING)
+public abstract class Customer {
     @Id
     private String id;
 
     @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column
     private String country;
@@ -51,6 +46,4 @@ public class Customer {
 
     @ManyToMany(mappedBy="favorite")
     private Set<Customer> favorite_by = new HashSet<Customer>();
-
-
 }
