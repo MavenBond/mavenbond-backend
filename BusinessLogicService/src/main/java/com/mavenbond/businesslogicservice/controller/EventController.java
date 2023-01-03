@@ -17,47 +17,46 @@ import java.util.Optional;
 @RequestMapping("/api/v1/events")
 public class EventController {
     @Autowired
-    private EventServiceImpl eventService;
+    private EventServiceImpl service;
 
     @GetMapping("/")
     public ResponseEntity<List<Event>> findAllEvents() {
-        return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Event> findEventById(@PathVariable Long id) {
+        Optional<Event> eventOptional = service.findById(id);
+
+        return eventOptional
+                .map(e -> new ResponseEntity<>(e, HttpStatus.OK))
+                .orElseGet(() -> (new ResponseEntity<>(HttpStatus.NOT_FOUND)));
     }
 
     @PostMapping("/")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        eventService.save(event);
+        service.save(event);
         return new ResponseEntity<>(event, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id,
                                              @RequestBody Event event) {
-        Optional<Event> eventOptional = eventService.findById(id);
+        Optional<Event> eventOptional = service.findById(id);
 
         return eventOptional.map(e -> {
-            e.setTitle(event.getTitle());
-            e.setSubject(event.getSubject());
-            e.setDescription(event.getDescription());
-            e.setType(event.getType());
-            e.setPlatform(event.getPlatform());
-            e.setStartDate(event.getStartDate());
-            e.setEndDate(event.getEndDate());
-            e.setMoneyMin(event.getMoneyMin());
-            e.setMoneyMax(event.getMoneyMax());
-
-            eventService.save(e);
-            return new ResponseEntity<>(e, HttpStatus.OK);
-        }).orElseGet(() -> {
-//            eventService.saveEvent(event);
-            return new ResponseEntity<>(event, HttpStatus.NO_CONTENT);
-        });
+            event.setId(e.getId());
+            service.save(event);
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        }).orElseGet(() -> (
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        ));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 

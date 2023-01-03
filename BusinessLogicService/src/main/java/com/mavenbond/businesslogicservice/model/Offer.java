@@ -2,12 +2,7 @@ package com.mavenbond.businesslogicservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jdk.jshell.Snippet;
 import lombok.*;
-import org.hibernate.Hibernate;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "offers")
@@ -30,8 +25,6 @@ public class Offer {
     private String influencerId;
     @Column(name = "message")
     private String message;
-    @Column(name = "event_id")
-    private Long eventId;
 
     @ManyToOne
     @JoinColumn(name = "event_id")
@@ -47,6 +40,5 @@ public class Offer {
         setInfluencerId(influencerId);
         setMessage(message);
         setEvent(event);
-        setEventId(event.getId());
     }
 }
