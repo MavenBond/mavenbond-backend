@@ -1,40 +1,41 @@
 package com.mavenbond.businesslogicservice.controller;
 
 import com.mavenbond.businesslogicservice.model.Event;
-import com.mavenbond.businesslogicservice.service.EventService;
+import com.mavenbond.businesslogicservice.service.EventServiceImpl;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/events")
 @CrossOrigin
 @NoArgsConstructor
+@RequestMapping("/api/v1/events")
 public class EventController {
-    private EventService eventService;
+    @Autowired
+    private EventServiceImpl eventService;
 
     @GetMapping("/")
     public ResponseEntity<List<Event>> findAllEvents() {
-        return new ResponseEntity<>(eventService.findAllEvents(), HttpStatus.OK);
+        return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        eventService.saveEvent(event);
+        eventService.save(event);
         return new ResponseEntity<>(event, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id,
                                              @RequestBody Event event) {
-        Optional<Event> eventEdit = eventService.findEventById(id);
+        Optional<Event> eventOptional = eventService.findById(id);
 
-        return eventEdit.map(e -> {
+        return eventOptional.map(e -> {
             e.setTitle(event.getTitle());
             e.setSubject(event.getSubject());
             e.setDescription(event.getDescription());
@@ -45,11 +46,11 @@ public class EventController {
             e.setMoneyMin(event.getMoneyMin());
             e.setMoneyMax(event.getMoneyMax());
 
-            eventService.saveEvent(e);
+            eventService.save(e);
             return new ResponseEntity<>(e, HttpStatus.OK);
         }).orElseGet(() -> {
-            eventService.saveEvent(event);
-            return new ResponseEntity<>(event, HttpStatus.OK);
+//            eventService.saveEvent(event);
+            return new ResponseEntity<>(event, HttpStatus.NO_CONTENT);
         });
     }
 
@@ -59,27 +60,5 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
-
-//    private EventRepository eventRepository;
-//
-//    @GetMapping("/events")
-//    public List<Event> findAllEvents() {
-//        return eventRepository.findAll();
-//    }
-//
-//    @PostMapping("/questions")
-//    public Event createEvent(@Valid @RequestBody Event event) {
-//        return eventRepository.save(event);
-//    }
-//
-//    @PutMapping("/questions/{eventId}")
-//    public Event updateEvent(@PathVariable Long eventId,
-//                                   @Valid @RequestBody Event eventRequest) {
-//        return eventRepository.findById(eventId)
-//        .map(event -> {
-//            question.setTitle(questionRequest.getTitle());
-//
-//        })
-//    }
 
 

@@ -15,14 +15,14 @@ public class EventServiceImpl implements EventService{
     private EventRepository repository;
 
     @Override
-    public List<Event> findAllEvents() {return repository.findAll();}
+    public List<Event> findAll() {return repository.findAll();}
 
     @Override
-    public void saveEvent(Event event) { repository.save(event); }
+    public void save(Event event) { repository.save(event); }
 
     @Override
-    public void deleteEvent(Long eventId) { repository.deleteById(eventId); }
+    public void delete(Long eventId) { repository.deleteById(eventId); }
 
     @Override
-    public Optional<Event> findEventById(Long eventId) { return repository.findById(eventId); }
+    public Optional<Event> findById(Long id) { return repository.findById(id); }
 }

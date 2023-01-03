@@ -14,14 +14,16 @@ public class OfferServiceImpl implements OfferService{
     private OfferRepository repository;
 
     @Override
-    public List<Offer> findAllOffers() {return repository.findAll();}
+    public List<Offer> findAll() {return repository.findAll();}
 
     @Override
-    public void saveOffer(Offer offer) { repository.save(offer); }
+    public void save(Offer offer) {
+        repository.save(offer);
+    }
 
     @Override
-    public void deleteOffer(Long offerId) { repository.deleteById(offerId); }
+    public void delete(Long offerId) { repository.deleteById(offerId); }
 
     @Override
-    public Optional<Offer> findOfferById(Long offerId) { return repository.findById(offerId); }
+    public Optional<Offer> findById(Long id) { return repository.findById(id); }
 }

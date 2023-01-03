@@ -1,14 +1,10 @@
 package com.mavenbond.businesslogicservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "events")
@@ -49,15 +45,13 @@ public class Event {
     private StatusEnum status;
 
     @Column(name = "business_id")
-    private Long business_id;
+    private String businessId;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "startDate")
-    private Date startDate;
+    private Long startDate;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "endDate")
-    private Date endDate;
+    private Long endDate;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude

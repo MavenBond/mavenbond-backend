@@ -1,8 +1,14 @@
 package com.mavenbond.businesslogicservice.controller;
 
+import com.mavenbond.businesslogicservice.model.Event;
 import com.mavenbond.businesslogicservice.model.Offer;
+import com.mavenbond.businesslogicservice.pojo.OfferRequest;
+import com.mavenbond.businesslogicservice.repository.OfferRepository;
+import com.mavenbond.businesslogicservice.service.EventService;
 import com.mavenbond.businesslogicservice.service.OfferService;
+import com.mavenbond.businesslogicservice.service.OfferServiceImpl;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +18,13 @@ import java.util.Optional;
 
 @RestController
 @NoArgsConstructor
-@RequestMapping("/api/v1/offers")
 @CrossOrigin
+@RequestMapping("/api/v1/offers")
 public class OfferController {
-    private OfferService offerService;
+    @Autowired
+    private OfferServiceImpl offerService;
+    @Autowired
+    private EventService eventService;
 
     @GetMapping("/")
     public ResponseEntity<List<Offer>> findAllOffers() {
@@ -23,7 +32,10 @@ public class OfferController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Offer> createOffer(@RequestBody Offer offer) {
+    public ResponseEntity<Offer> createOffer(@RequestBody OfferRequest offerRequest) {
+        Optional<Event> event = eventService.findEventById(offerRequest.event_id);
+        Offer offer = new Offer(offerRequest.money, offerRequest.duration, offerRequest.status, offerRequest.influencerId, offerRequest.message, event.get());
+
         offerService.saveOffer(offer);
         return new ResponseEntity<>(offer, HttpStatus.CREATED);
     }
