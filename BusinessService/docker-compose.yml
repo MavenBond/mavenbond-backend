@@ -1,7 +1,6 @@
 services:
   business-service:
-    image: "business-service-docker.jar" # For Development
-    # image: "pcminh0505/business-service" # For Production
+    image: "pcminh0505/business-service" # For Production
     build:
       context: .
     container_name: business-service

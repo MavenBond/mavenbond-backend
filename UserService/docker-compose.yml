@@ -1,7 +1,6 @@
 services:
   user-service:
-    image: "user-service-docker.jar" # For Development
-    # image: "pcminh0505/user-service" # For Production
+    image: "pcminh0505/user-service" # For Production
     build:
       context: .
     container_name: user-service

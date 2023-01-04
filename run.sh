@@ -8,9 +8,13 @@ build() {
 
   mvn install -DskipTests
 
+  docker build -t pcminh0505/user-service . #Rebuild
+
   cd ../BusinessService
 
   mvn install -DskipTests
+
+  docker build -t pcminh0505/business-service . #Rebuild
 
   echo "=> Build DONE ✅";
 }
