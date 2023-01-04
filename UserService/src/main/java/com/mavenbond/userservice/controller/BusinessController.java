@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/v1/business")
@@ -22,13 +24,20 @@ public class BusinessController extends BaseController<Business> {
 
     @PostMapping("/signup")
     public ResponseEntity<Business> createCustomer(@RequestBody CustomerInput customerInput){
-        Business newCustomer = new Business();
-        newCustomer.setId(customerInput.getId());
-        newCustomer.setEmail(customerInput.getEmail());
 
-        // TODO: Add more fields if needed
+        // Check if user already existed
+        Optional<Business> customerOptional = businessService.findById(customerInput.getId());
 
-        businessService.save(newCustomer);
-        return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+        return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
+                .orElseGet(() -> {
+                    Business newCustomer = new Business();
+                    newCustomer.setId(customerInput.getId());
+                    newCustomer.setEmail(customerInput.getEmail());
+
+                    // TODO: Add more fields if needed
+
+                    businessService.save(newCustomer);
+                    return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+                });
     }
 }
