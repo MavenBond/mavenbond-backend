@@ -35,15 +35,15 @@ public abstract class BaseController<T extends Customer> {
         Optional<T> customerOptional = service.findById(id);
 
         return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.OK));
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<T> getCustomerByEmail(@PathVariable String email){
+    @GetMapping("/email/")
+    public ResponseEntity<T> getCustomerByEmail(@RequestParam String email){
         Optional<T> customerOptional =  service.findByEmail(email);
 
         return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.OK));
     }
 
     @PutMapping("/{id}")
@@ -53,7 +53,7 @@ public abstract class BaseController<T extends Customer> {
         return customerOptional.map(customerTmp -> {
             customer.setId(customerTmp.getId());
             return new ResponseEntity<>(service.save(customer), HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.OK));
     }
 
     @DeleteMapping("/{id}")
@@ -63,6 +63,6 @@ public abstract class BaseController<T extends Customer> {
         return customerOptional.map(customer -> {
             service.delete(id);
             return new ResponseEntity<>(customer, HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.OK));
     }
 }

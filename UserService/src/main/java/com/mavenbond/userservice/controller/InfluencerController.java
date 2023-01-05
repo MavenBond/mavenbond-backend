@@ -24,21 +24,15 @@ public class InfluencerController extends BaseController<Influencer> {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Influencer> createCustomer(@RequestBody CustomerInput customerInput){
+    public ResponseEntity<Influencer> createCustomer(@RequestBody Influencer influencer){
 
         // Check if user already existed
-        Optional<Influencer> customerOptional = influencerService.findById(customerInput.getId());
+        Optional<Influencer> customerOptional = influencerService.findById(influencer.getId());
 
         return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
                 .orElseGet(() -> {
-                    Influencer newCustomer = new Influencer();
-                    newCustomer.setId(customerInput.getId());
-                    newCustomer.setEmail(customerInput.getEmail());
-
-                    // TODO: Add more fields if needed
-
-                    influencerService.save(newCustomer);
-                    return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+                    influencerService.save(influencer);
+                    return new ResponseEntity<>(influencer, HttpStatus.CREATED);
                 });
 
 
