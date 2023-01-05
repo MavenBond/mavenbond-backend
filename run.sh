@@ -4,15 +4,11 @@
 build() {
   echo "Building JARs from all services 🔨";
 
-  cd UserService
-
-  mvn install -DskipTests
+  mvn -f ./UserService/pom.xml install -DskipTests
 
   docker build -t pcminh0505/user-service . #Rebuild
 
-  cd ../BusinessService
-
-  mvn install -DskipTests
+  mvn -f ./BusinessService/pom.xml install -DskipTests
 
   docker build -t pcminh0505/business-service . #Rebuild
 

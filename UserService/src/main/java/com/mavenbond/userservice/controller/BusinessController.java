@@ -23,21 +23,15 @@ public class BusinessController extends BaseController<Business> {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Business> createCustomer(@RequestBody CustomerInput customerInput){
+    public ResponseEntity<Business> createCustomer(@RequestBody Business business){
 
         // Check if user already existed
-        Optional<Business> customerOptional = businessService.findById(customerInput.getId());
+        Optional<Business> customerOptional = businessService.findById(business.getId());
 
         return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
                 .orElseGet(() -> {
-                    Business newCustomer = new Business();
-                    newCustomer.setId(customerInput.getId());
-                    newCustomer.setEmail(customerInput.getEmail());
-
-                    // TODO: Add more fields if needed
-
-                    businessService.save(newCustomer);
-                    return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
+                    businessService.save(business);
+                    return new ResponseEntity<>(business, HttpStatus.CREATED);
                 });
     }
 }

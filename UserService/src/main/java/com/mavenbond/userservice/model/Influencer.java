@@ -9,14 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-//@DiscriminatorValue("influencer")
 public class Influencer extends Customer {
-    @Column
-    private String fname;
-
-    @Column
-    private String lname;
-
     @Column
     private String facebook_url;
 

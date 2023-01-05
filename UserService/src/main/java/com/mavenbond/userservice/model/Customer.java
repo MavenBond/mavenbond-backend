@@ -29,6 +29,12 @@ public abstract class Customer {
     private String email;
 
     @Column
+    private String first_name;
+
+    @Column
+    private String last_name;
+
+    @Column
     private String country;
 
     @Column

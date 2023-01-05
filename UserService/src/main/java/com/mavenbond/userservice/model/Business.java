@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-//@DiscriminatorValue("business")
 public class Business extends Customer {
     @Column
     private String company_name;
