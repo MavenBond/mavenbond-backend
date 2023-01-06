@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM amazoncorretto:17
 ADD target/user-service-docker.jar user-service-docker.jar
 
 ENTRYPOINT ["java", "-jar","user-service-docker.jar"]
