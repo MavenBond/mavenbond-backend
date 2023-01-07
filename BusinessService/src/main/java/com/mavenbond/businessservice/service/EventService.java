@@ -10,4 +10,5 @@ public interface EventService {
     void save(Event event);
     void delete(Long eventId);
     Optional<Event> findById(Long id);
+    Optional<List<Event>> findByUserId(String id);
 }

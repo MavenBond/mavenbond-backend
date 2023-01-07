@@ -24,4 +24,9 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public Optional<Event> findById(Long id) { return repository.findById(id); }
+
+    @Override
+    public Optional<List<Event>> findByUserId(String id) {
+        return repository.findByUserId(id);
+    }
 }

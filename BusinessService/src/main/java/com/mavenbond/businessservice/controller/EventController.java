@@ -58,6 +58,15 @@ public class EventController {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Event>> findEventsByUser(@PathVariable String id) {
+        Optional<List<Event>> eventListOptional = service.findByUserId(id);
+
+        return eventListOptional
+                .map(e -> new ResponseEntity<>(e, HttpStatus.OK))
+                .orElseGet(() -> (new ResponseEntity<>(HttpStatus.NOT_FOUND)));
+    }
 }
 
 
