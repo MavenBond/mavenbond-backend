@@ -15,7 +15,7 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
-    public Page<Event> findAll(Pageable pageable) {return repository.findAll(pageable);}
+    public Page<Event> findAll(String key, Pageable pageable) {return repository.findAllByKeyLike(key, pageable);}
 
     public void save(Event event) { repository.save(event); }
 
@@ -23,15 +23,15 @@ public class EventService {
 
     public Optional<Event> findById(Long id) { return repository.findById(id); }
 
-    public Page<Event> findAllByBusinessId(String id, Pageable pageable) {
-        return repository.findAllByBusinessId(id, pageable);
-    }
-
-    public Page<Event> findAllByBusinessIdAndPlatform(String id, String platform, Pageable pageable) {
-        return repository.findAllByBusinessIdAndPlatform(id, platform, pageable);
-    }
-
-    public Page<Event> findAllByBusinessIdAndType(String id, String type, Pageable pageable) {
-        return repository.findAllByBusinessIdAndType(id, type, pageable);
-    }
+//    public Page<Event> findAllByBusinessId(String id, Pageable pageable) {
+//        return repository.findAllByBusinessId(id, pageable);
+//    }
+//
+//    public Page<Event> findAllByBusinessIdAndPlatform(String id, String platform, Pageable pageable) {
+//        return repository.findAllByBusinessIdAndPlatform(id, platform, pageable);
+//    }
+//
+//    public Page<Event> findAllByBusinessIdAndType(String id, String type, Pageable pageable) {
+//        return repository.findAllByBusinessIdAndType(id, type, pageable);
+//    }
 }

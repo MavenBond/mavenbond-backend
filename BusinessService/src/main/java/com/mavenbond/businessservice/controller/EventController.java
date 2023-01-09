@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +26,13 @@ public class EventController {
     @GetMapping("/")
     public ResponseEntity<Page<Event>> findAllEvents(@RequestParam(name="pageNo" ,defaultValue = "0") Integer pageNo,
                                                      @RequestParam(name="pageSize", defaultValue = "10") Integer pageSize,
-                                                     @RequestParam(name="platform", required=false) String platform,
-                                                     @RequestParam(name="type", required=false) String type,
-                                                     @RequestParam(name="startPrice", required=false) Integer startPrice,
-                                                     @RequestParam(name="endPrice", required=false) Integer endPrice) {
-        return new ResponseEntity<>(service.findAll(PageRequest.of(pageNo, pageSize)), HttpStatus.OK);
+                                                     @RequestParam(name="key", defaultValue = "", required=false) String key,
+                                                     @RequestParam(name="sortBy", defaultValue = "id", required=false) String sortBy,
+                                                     @RequestParam(name="isAsc", defaultValue = "false", required=false) Boolean isAsc) {
+        Pageable pageable = isAsc ? PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending()) :
+                PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
+        return new ResponseEntity<>(service.findAll(key, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
