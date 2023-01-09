@@ -4,7 +4,7 @@ import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.model.Offer;
 import com.mavenbond.businessservice.pojo.OfferRequest;
 import com.mavenbond.businessservice.service.EventService;
-import com.mavenbond.businessservice.service.OfferServiceImpl;
+import com.mavenbond.businessservice.service.OfferService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/offers")
 public class OfferController {
     @Autowired
-    private OfferServiceImpl service;
+    private OfferService service;
     @Autowired
     private EventService eventService;
 
