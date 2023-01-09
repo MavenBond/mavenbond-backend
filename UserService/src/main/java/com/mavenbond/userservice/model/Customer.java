@@ -18,8 +18,8 @@ import java.util.Set;
 @Entity(name="customer")
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value = Business.class, name = "Business"),
-        @JsonSubTypes.Type(value = Influencer.class, name = "Influencer"),
+@JsonSubTypes({@JsonSubTypes.Type(value = Business.class, name = "business"),
+        @JsonSubTypes.Type(value = Influencer.class, name = "influencer"),
 })
 public abstract class Customer {
     @Id
@@ -41,7 +41,7 @@ public abstract class Customer {
     private String phone;
 
     @Column
-    private String image_url;
+    private String avatar_url;
 
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="favorite",
