@@ -16,7 +16,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("SELECT e FROM Event e WHERE e.title LIKE %:key%")
     Page<Event> findAllByKeyLike(@Param("key") String key, Pageable pageable);
 
-//    Page<Event> findAllByBusinessId(String id, Pageable pageable);
+    Page<Event> findAllByBusinessId(String id, Pageable pageable);
+
 //    Page<Event> findAllByBusinessIdAndPlatform(String id, String platform, Pageable pageable);
 //    Page<Event> findAllByBusinessIdAndType(String id, String type, Pageable pageable);
 }

@@ -23,10 +23,10 @@ public class EventService {
 
     public Optional<Event> findById(Long id) { return repository.findById(id); }
 
-//    public Page<Event> findAllByBusinessId(String id, Pageable pageable) {
-//        return repository.findAllByBusinessId(id, pageable);
-//    }
-//
+    public Page<Event> findAllByBusinessId(String id, Pageable pageable) {
+        return repository.findAllByBusinessId(id, pageable);
+    }
+
 //    public Page<Event> findAllByBusinessIdAndPlatform(String id, String platform, Pageable pageable) {
 //        return repository.findAllByBusinessIdAndPlatform(id, platform, pageable);
 //    }

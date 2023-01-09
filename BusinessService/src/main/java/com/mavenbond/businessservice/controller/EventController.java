@@ -70,14 +70,14 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/user/{id}")
-//    public ResponseEntity<Page<Event>> findEventsByBusiness(@PathVariable String id,
-//                                                        @RequestParam(defaultValue = "0") Integer pageNo,
-//                                                        @RequestParam(defaultValue = "10") Integer pageSize) {
-//
-//        return new ResponseEntity<>(service.findAllByBusinessId(id, PageRequest.of(pageNo, pageSize)) ,HttpStatus.OK);
-//    }
-//
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Page<Event>> findEventsByBusiness(@PathVariable String id,
+                                                        @RequestParam(defaultValue = "0") Integer pageNo,
+                                                        @RequestParam(defaultValue = "10") Integer pageSize) {
+
+        return new ResponseEntity<>(service.findAllByBusinessId(id, PageRequest.of(pageNo, pageSize)) ,HttpStatus.OK);
+    }
+
 //    @GetMapping("/user/{id}/platform/{platform")
 //    public ResponseEntity<Page<Event>> findEventsByBusinessAndPlatform(@PathVariable String id,
 //                                                            @PathVariable String platform,
