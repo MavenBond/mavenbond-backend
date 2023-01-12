@@ -1,4 +1,14 @@
 services:
+  redis:
+    container_name: redis-user
+    image: redis
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis:/data
+    networks:
+      - postgres
+
   user-service:
     image: "pcminh0505/user-service" # For Production
     build:

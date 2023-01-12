@@ -5,8 +5,12 @@ import com.mavenbond.businessservice.model.Offer;
 import com.mavenbond.businessservice.pojo.OfferRequest;
 import com.mavenbond.businessservice.service.EventService;
 import com.mavenbond.businessservice.service.OfferService;
+import com.mavenbond.businessservice.service.Producer;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +27,23 @@ public class OfferController {
     private OfferService service;
     @Autowired
     private EventService eventService;
+    @Autowired
+    private Producer producer;
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @GetMapping("/")
     public ResponseEntity<List<Offer>> findAllOffers() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
-
+    @Cacheable(value = "offerCache", key = "#id")
     @GetMapping("/{id}")
-    public ResponseEntity<Offer> findOfferById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public Offer findOfferById(@PathVariable Long id) {
         Optional<Offer> offerOptional = service.findById(id);
+        LOG.info("Getting offer with ID {}.", id);
 
         return offerOptional
-                .map(o -> new ResponseEntity<>(o, HttpStatus.OK))
-                .orElseGet(() -> (new ResponseEntity<>(HttpStatus.NOT_FOUND)));
+                .orElseGet(() -> (null));
     }
 
     @PostMapping("/")
@@ -44,7 +52,7 @@ public class OfferController {
 
         return eventOptional.map(e -> {
             Offer offer = new Offer(offerRequest.money, offerRequest.duration, offerRequest.status, offerRequest.influencerId, offerRequest.message, e);
-            service.save(offer);
+            producer.sendOffer(offer);
             return new ResponseEntity<>(offer, HttpStatus.CREATED);
         }).orElseGet(() -> (
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)

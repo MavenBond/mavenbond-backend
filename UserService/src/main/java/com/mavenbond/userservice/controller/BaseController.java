@@ -4,6 +4,9 @@ package com.mavenbond.userservice.controller;
 import com.mavenbond.userservice.model.Customer;
 import com.mavenbond.userservice.repository.BaseRepository;
 import com.mavenbond.userservice.service.BaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,7 @@ import java.util.Optional;
 
 public abstract class BaseController<T extends Customer> {
     private final BaseService<T> service;
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public BaseController(BaseRepository<T> repository) {
         this.service = new BaseService<>(repository) {};
@@ -30,12 +34,15 @@ public abstract class BaseController<T extends Customer> {
         return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
     }
 
+    @Cacheable(value = "userCache", key = "#id")
     @GetMapping("/{id}")
-    public ResponseEntity<T> getCustomerById(@PathVariable String id){
+    @ResponseStatus(HttpStatus.OK)
+    public T getCustomerById(@PathVariable String id){
         Optional<T> customerOptional = service.findById(id);
+        LOG.info("Getting user with ID {}.", id);
 
-        return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.OK));
+        return customerOptional
+                .orElseGet(() -> (null));
     }
 
     @GetMapping("/email/")

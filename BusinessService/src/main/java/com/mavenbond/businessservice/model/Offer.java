@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "offers")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Offer {
+public class Offer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

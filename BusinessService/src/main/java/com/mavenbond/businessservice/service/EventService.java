@@ -2,7 +2,9 @@ package com.mavenbond.businessservice.service;
 
 import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.repository.EventRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,14 @@ public class EventService {
 
     public void delete(Long eventId) { repository.deleteById(eventId); }
 
-    public Optional<Event> findById(Long id) { return repository.findById(id); }
+    @Cacheable(value = "itemCache", key = "#id")
+    public Optional<Event> findById(Long id) {
+        Optional<Event> result = repository.findById(id);
+        Event eventEntity = result.get();
+        Hibernate.initialize(eventEntity.getOffers());
+
+        return repository.findById(id);
+    }
 
     public Page<Event> findAllByBusinessId(String id, Pageable pageable) {
         return repository.findAllByBusinessId(id, pageable);

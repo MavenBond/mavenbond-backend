@@ -2,8 +2,12 @@ package com.mavenbond.businessservice.controller;
 
 import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.service.EventService;
+import com.mavenbond.businessservice.service.Producer;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +25,10 @@ import java.util.Optional;
 public class EventController {
     @Autowired
     private EventService service;
+    @Autowired
+    private Producer producer;
+
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @GetMapping("/")
     public ResponseEntity<Page<Event>> findAllEvents(@RequestParam(name="pageNo" ,defaultValue = "0") Integer pageNo,
@@ -35,18 +42,29 @@ public class EventController {
         return new ResponseEntity<>(service.findAll(key, pageable), HttpStatus.OK);
     }
 
+    @Cacheable(value = "eventCache", key = "#id")
     @GetMapping("/{id}")
-    public ResponseEntity<Event> findEventById(@PathVariable Long id) {
+    public Event findEventById(@PathVariable Long id) {
         Optional<Event> eventOptional = service.findById(id);
-
+        LOG.info("Getting event with ID {}.", id);
         return eventOptional
-                .map(e -> new ResponseEntity<>(e, HttpStatus.OK))
-                .orElseGet(() -> (new ResponseEntity<>(HttpStatus.NOT_FOUND)));
+                .orElseGet(() -> (null));
     }
+
+//    public ResponseEntity<Event> findEventById(@PathVariable Long id) {
+//        Optional<Event> eventOptional = service.findById(id);
+//        LOG.info("Getting user with ID {}.", id);
+//        return eventOptional
+//                .map(e -> new ResponseEntity<>(e, HttpStatus.OK))
+//                .orElseGet(() -> (new ResponseEntity<>(HttpStatus.NOT_FOUND)));
+//    }
 
     @PostMapping("/")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        service.save(event);
+//        service.save(event);
+//        return new ResponseEntity<>(event, HttpStatus.CREATED);
+        this.producer.sendEvent(event);
+
         return new ResponseEntity<>(event, HttpStatus.CREATED);
     }
 

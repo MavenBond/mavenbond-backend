@@ -3,6 +3,7 @@ package com.mavenbond.businessservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Event {
+public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
