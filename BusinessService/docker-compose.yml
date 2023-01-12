@@ -17,7 +17,7 @@ services:
       - KAFKA_ADVERTISED_HOST_NAME=kafka
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_ADVERTISED_PORT=9092
-      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
+      - KAFKA_CREATE_TOPICS="events:1:1, offer:1:1"
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
     depends_on:
       - zookeeper
