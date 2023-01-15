@@ -9,4 +9,4 @@ eureka:
     register-with-eureka: false
   instance:
     prefer-ip-address: true
-    ip-address:
+    ip-address: 54.169.3.140

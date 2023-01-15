@@ -1,9 +1,9 @@
 services:
   discovery-service:
-    container_name: service-discovery-docker
-    build:
-      context: .
-      dockerfile: Dockerfile
+#    container_name: service-discovery-docker
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     image: pcminh0505/discovery-service
     ports:
       - 8761:8761
