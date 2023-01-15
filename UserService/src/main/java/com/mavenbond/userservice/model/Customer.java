@@ -16,11 +16,13 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name="customer")
-@Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value = Business.class, name = "business"),
-        @JsonSubTypes.Type(value = Influencer.class, name = "influencer"),
-})
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "customer_type")
+
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+//@JsonSubTypes({@JsonSubTypes.Type(value = Business.class, name = "business"),
+//        @JsonSubTypes.Type(value = Influencer.class, name = "influencer"),
+//})
 public abstract class Customer {
     @Id
     private String id;
