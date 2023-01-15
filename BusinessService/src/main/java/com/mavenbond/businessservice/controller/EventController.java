@@ -1,7 +1,7 @@
 package com.mavenbond.businessservice.controller;
 
 import com.google.common.base.Joiner;
-import com.mavenbond.businessservice.domain.EventSpecificationsBuilder;
+import com.mavenbond.businessservice.domain.SpecificationsBuilder;
 import com.mavenbond.businessservice.dto.SearchOperation;
 import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.service.EventService;
@@ -36,15 +36,15 @@ public class EventController {
         Pageable pageable = isAsc ? PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending()) :
                                     PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 
-        EventSpecificationsBuilder builder = new EventSpecificationsBuilder();
+        SpecificationsBuilder builder = new SpecificationsBuilder();
         String operationSetExper = Joiner.on("|")
                 .join(SearchOperation.SIMPLE_OPERATION_SET);
         Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),");
         Matcher matcher = pattern.matcher(search + ",");
         while (matcher.find()) {
-            builder.with(matcher.group(1), matcher.group(2), matcher.group(4), matcher.group(3), matcher.group(5));
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(4), matcher.group(3).toLowerCase(), matcher.group(5));
         }
-        Specification<Event> spec = builder.build();
+        Specification<Event> spec = builder.buildEvent();
 
         return new ResponseEntity<>(service.findAll(spec, pageable), HttpStatus.OK);
     }

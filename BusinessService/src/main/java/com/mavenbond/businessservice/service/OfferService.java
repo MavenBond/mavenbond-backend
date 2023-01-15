@@ -3,9 +3,11 @@ package com.mavenbond.businessservice.service;
 import com.mavenbond.businessservice.model.Offer;
 import com.mavenbond.businessservice.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,7 +15,7 @@ public class OfferService {
     @Autowired
     private OfferRepository repository;
 
-    public List<Offer> findAll() { return repository.findAll(); }
+    public Page<Offer> findAll(Specification<Offer> spec, Pageable pageable) { return repository.findAll(spec, pageable); }
 
     public void save(Offer offer) { repository.save(offer); }
 
