@@ -1,0 +1,6 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://54.169.3.140:8761/eureka
+  instance:
+    preferIpAddress: true

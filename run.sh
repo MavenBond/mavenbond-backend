@@ -29,6 +29,35 @@ build() {
   echo "=> Build DONE ✅";
 }
 
+# Build process
+publish() {
+  echo "Publish all image to DockerHub 🔨";
+
+  cd UserService
+
+  mvn install -DskipTests
+
+  docker buildx build --platform linux/amd64,linux/arm64 --push -t pcminh0505/user-service .
+
+  cd ../
+  
+  cd BusinessService
+  
+  mvn install -DskipTests
+
+  docker buildx build --platform linux/amd64,linux/arm64 --push -t pcminh0505/business-service .
+
+  cd ../
+  
+  cd ServiceDiscovery
+
+  mvn install -DskipTests
+
+  docker buildx build --platform linux/amd64,linux/arm64 --push -t pcminh0505/discovery-service .
+
+  echo "=> Build DONE ✅";
+}
+
 # Start process
 start() {
   echo "Starting all Containers 🚀";
@@ -67,6 +96,9 @@ execute() {
     stop)
       stop
       ;;
+    publish)
+      publish
+      ;;
     *)
       err "Invalid task: ${task}"
       usage
@@ -80,7 +112,7 @@ err() {
 }
 
 usage() {
-    err "$(basename "$0"): [build|start|stop]"
+    err "$(basename "$0"): [build|start|stop|publish]"
 }
 
 main() {
