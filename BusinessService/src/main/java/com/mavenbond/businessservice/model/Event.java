@@ -49,6 +49,9 @@ public class Event {
     @Column(name = "business_email")
     private String businessEmail;
 
+    @Column(name = "business_name")
+    private String businessName;
+
     @Column(name = "startDate")
     private Long startDate;
 

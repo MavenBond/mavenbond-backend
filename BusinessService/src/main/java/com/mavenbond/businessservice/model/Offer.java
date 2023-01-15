@@ -27,6 +27,8 @@ public class Offer {
     private String businessId;
     @Column(name = "business_email")
     private String businessEmail;
+    @Column(name = "business_name")
+    private String businessName;
     @Column(name = "message")
     private String message;
 
@@ -46,5 +48,6 @@ public class Offer {
         setEvent(event);
         setBusinessId(event.getBusinessId());
         setBusinessEmail(event.getBusinessEmail());
+        setBusinessName(event.getBusinessName());
     }
 }
