@@ -5,6 +5,7 @@ import com.mavenbond.businessservice.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
-    public Page<Event> findAll(String key, Pageable pageable) {return repository.findAllByKeyLike(key, pageable);}
+    public Page<Event> findAll(Specification<Event> spec, Pageable pageable) {return repository.findAll(spec, pageable);}
 
     public void save(Event event) { repository.save(event); }
 
