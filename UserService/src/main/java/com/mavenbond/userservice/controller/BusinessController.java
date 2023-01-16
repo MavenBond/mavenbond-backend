@@ -1,9 +1,11 @@
 package com.mavenbond.userservice.controller;
 
 import com.mavenbond.userservice.dto.CustomerInput;
+import com.mavenbond.userservice.engine.Producer;
 import com.mavenbond.userservice.model.Business;
 import com.mavenbond.userservice.repository.BusinessRepository;
 import com.mavenbond.userservice.service.BusinessService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ import java.util.Optional;
 @CrossOrigin
 public class BusinessController extends BaseController<Business> {
     private final BusinessService businessService;
+    @Autowired
+    private Producer kafkaProducer;
 
     public BusinessController(BusinessRepository repository) {
         super(repository);
@@ -30,7 +34,8 @@ public class BusinessController extends BaseController<Business> {
 
         return customerOptional.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
                 .orElseGet(() -> {
-                    businessService.save(business);
+//                    businessService.save(business);
+                    kafkaProducer.sendSaveRequest(business, "SAVE_BUSINESS");
                     return new ResponseEntity<>(business, HttpStatus.CREATED);
                 });
     }
