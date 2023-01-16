@@ -20,8 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
-@NoArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/events")
 public class EventController {
     @Autowired
