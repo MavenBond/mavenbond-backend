@@ -30,6 +30,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private PlatformEnum platform;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
