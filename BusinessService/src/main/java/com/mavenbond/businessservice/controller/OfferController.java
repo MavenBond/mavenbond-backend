@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.mavenbond.businessservice.domain.SpecificationsBuilder;
 import com.mavenbond.businessservice.dto.SearchOperation;
 import com.mavenbond.businessservice.dto.OfferDto;
+import com.mavenbond.businessservice.engine.Producer;
 import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.model.Offer;
 import com.mavenbond.businessservice.pojo.OfferRequest;
@@ -32,6 +33,8 @@ public class OfferController {
     private OfferService service;
     @Autowired
     private EventService eventService;
+    @Autowired
+    private Producer kafkaProducer;
 
 //    @GetMapping("/")
 //    public ResponseEntity<List<Offer>> findAllOffers() {
@@ -75,7 +78,8 @@ public class OfferController {
 
         return eventOptional.map(e -> {
             Offer offer = new Offer(offerRequest.money, offerRequest.duration, offerRequest.status, offerRequest.influencerId, offerRequest.message, e);
-            service.save(offer);
+//            service.save(offer);
+            kafkaProducer.sendSaveRequest(offer, "SAVE_OFFER");
             return new ResponseEntity<>(new OfferDto(offer), HttpStatus.CREATED);
         }).orElseGet(() -> (
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)

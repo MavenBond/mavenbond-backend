@@ -3,6 +3,7 @@ package com.mavenbond.businessservice.controller;
 import com.google.common.base.Joiner;
 import com.mavenbond.businessservice.domain.SpecificationsBuilder;
 import com.mavenbond.businessservice.dto.SearchOperation;
+import com.mavenbond.businessservice.engine.Producer;
 import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.service.EventService;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,8 @@ import java.util.regex.Pattern;
 public class EventController {
     @Autowired
     private EventService service;
+    @Autowired
+    private Producer kafkaProducer;
 
     @GetMapping("/")
     public ResponseEntity<Page<Event>> findAllEvents(@RequestParam(name="pageNo" ,defaultValue = "0") Integer pageNo,
@@ -59,7 +62,11 @@ public class EventController {
 
     @PostMapping("/")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        service.save(event);
+        kafkaProducer.sendSaveRequest(event, "SAVE_EVENT");
+
+//        bomService.saveBOM(bomDto);
+        String message = "Added Event " + event.getTitle();
+//        service.save(event);
         return new ResponseEntity<>(event, HttpStatus.CREATED);
     }
 
