@@ -23,12 +23,6 @@ public class Offer {
     private StatusEnum status;
     @Column(name = "influencer_id")
     private String influencerId;
-    @Column(name = "business_id")
-    private String businessId;
-    @Column(name = "business_email")
-    private String businessEmail;
-    @Column(name = "business_name")
-    private String businessName;
     @Column(name = "message")
     private String message;
 
@@ -46,8 +40,5 @@ public class Offer {
         setInfluencerId(influencerId);
         setMessage(message);
         setEvent(event);
-        setBusinessId(event.getBusinessId());
-        setBusinessEmail(event.getBusinessEmail());
-        setBusinessName(event.getBusinessName());
     }
 }
