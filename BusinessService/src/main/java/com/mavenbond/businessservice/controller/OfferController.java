@@ -58,7 +58,7 @@ public class OfferController {
         }
         Specification<Offer> spec = builder.buildOffer();
 
-        return new ResponseEntity<>(service.findAll(spec, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(service.findAll(spec, pageable).map(OfferDto::new), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
