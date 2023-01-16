@@ -16,6 +16,6 @@ public interface BaseRepository<T extends Customer> extends JpaRepository<T, Str
     @Query("select u from #{#entityName} as u where u.email = ?1 ")
     Optional<T> findByEmail(String email);
 
-    @Query("SELECT u FROM #{#entityName} as u WHERE u.full_name LIKE %:search%")
+    @Query("SELECT u FROM #{#entityName} as u WHERE u.full_name LIKE %:search% OR u.email LIKE %:search%")
     Page<T> findAll(@Param("search") String search, Pageable pageable);
 }
