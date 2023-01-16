@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 @RestController
 @NoArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/v1/offers")
 public class OfferController {
     @Autowired

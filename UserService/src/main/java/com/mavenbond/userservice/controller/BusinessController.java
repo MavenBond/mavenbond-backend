@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/business")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BusinessController extends BaseController<Business> {
     private final BusinessService businessService;
 
