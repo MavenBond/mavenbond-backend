@@ -1,5 +1,6 @@
 package com.mavenbond.businessservice.controller;
 
+import com.mavenbond.businessservice.dto.OfferDto;
 import com.mavenbond.businessservice.model.Event;
 import com.mavenbond.businessservice.model.Offer;
 import com.mavenbond.businessservice.pojo.OfferRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @NoArgsConstructor
@@ -25,41 +27,41 @@ public class OfferController {
     private EventService eventService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Offer>> findAllOffers() {
-        return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<OfferDto>> findAllOffers() {
+        return new ResponseEntity<>(service.findAll().stream().map(OfferDto::new).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Offer> findOfferById(@PathVariable Long id) {
+    public ResponseEntity<OfferDto> findOfferById(@PathVariable Long id) {
         Optional<Offer> offerOptional = service.findById(id);
 
         return offerOptional
-                .map(o -> new ResponseEntity<>(o, HttpStatus.OK))
+                .map(o -> new ResponseEntity<>(new OfferDto(o), HttpStatus.OK))
                 .orElseGet(() -> (new ResponseEntity<>(HttpStatus.NOT_FOUND)));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Offer> createOffer(@RequestBody OfferRequest offerRequest) {
+    public ResponseEntity<OfferDto> createOffer(@RequestBody OfferRequest offerRequest) {
         Optional<Event> eventOptional = eventService.findById(offerRequest.event_id);
 
         return eventOptional.map(e -> {
             Offer offer = new Offer(offerRequest.money, offerRequest.duration, offerRequest.status, offerRequest.influencerId, offerRequest.message, e);
             service.save(offer);
-            return new ResponseEntity<>(offer, HttpStatus.CREATED);
+            return new ResponseEntity<>(new OfferDto(offer), HttpStatus.CREATED);
         }).orElseGet(() -> (
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)
         ));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Offer> updateOffer(@PathVariable Long id,
+    public ResponseEntity<OfferDto> updateOffer(@PathVariable Long id,
                                              @RequestBody Offer offer) {
         Optional<Offer> offerOptional = service.findById(id);
 
         return offerOptional.map(o -> {
             offer.setId(o.getId());
             service.save(offer);
-            return new ResponseEntity<>(offer, HttpStatus.OK);
+            return new ResponseEntity<>(new OfferDto(offer), HttpStatus.OK);
         }).orElseGet(() -> (
                 new ResponseEntity<>(HttpStatus.NOT_FOUND)
         ));
