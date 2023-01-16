@@ -7,6 +7,7 @@ import com.mavenbond.userservice.service.BaseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,16 @@ public abstract class BaseController<T extends Customer> {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<T>> getAll(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize
-//            @RequestParam(defaultValue = "id") String sortBy
+    public ResponseEntity<Page<T>> getAll(@RequestParam(name="pageNo" ,defaultValue = "0") Integer pageNo,
+                                          @RequestParam(name="pageSize", defaultValue = "10") Integer pageSize,
+                                          @RequestParam(name="search", defaultValue = "", required=false) String search,
+                                          @RequestParam(name="sortBy", defaultValue = "id", required=false) String sortBy,
+                                          @RequestParam(name="isAsc", defaultValue = "false", required=false) Boolean isAsc
     ){
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);
+        Pageable pageable = isAsc ? PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending()):
+                                    PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
+        return new ResponseEntity<>(service.findAll(search ,pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

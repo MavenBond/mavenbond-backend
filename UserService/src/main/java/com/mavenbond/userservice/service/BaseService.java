@@ -30,7 +30,7 @@ public abstract class BaseService<T extends Customer> {
         return repository.findByEmail(email);
     }
 
-    public Page<T> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<T> findAll(String search, Pageable pageable) {
+        return repository.findAll(search, pageable);
     }
 }
