@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/influencer")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class InfluencerController extends BaseController<Influencer> {
     private final InfluencerService influencerService;
     @Autowired

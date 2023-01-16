@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/business")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class BusinessController extends BaseController<Business> {
     private final BusinessService businessService;
     @Autowired

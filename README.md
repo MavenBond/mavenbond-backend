@@ -23,3 +23,5 @@ Make sure you have [Maven](https://www.digitalocean.com/community/tutorials/inst
 ```bash
 ./run.sh stop # to stop all services
 ```
+
+For load testing, there is an `insert.sql` file for insert 1 million records to Customer (Influencer) DB, but need to perform via pgAdmin GUI

@@ -21,8 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@CrossOrigin
-@NoArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/events")
 public class EventController {
     @Autowired
